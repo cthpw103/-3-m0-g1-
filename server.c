@@ -1,7 +1,4 @@
-/*
-this only works on posix systems beacuse fuck bsd amrite??????
-no i'm actually just lazy
-*/
+
 #include <stdio.h>
 #include <string.h> 
 #include <sys/socket.h>  
