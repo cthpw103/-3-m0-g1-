@@ -57,14 +57,25 @@ int main(int argc , char *argv[])
              removeChar(str, '\uD83D\uDE15');
              directory = str;
              //woah :b:ecnology
-             FILE *dir;
-             dir=fopen(directory, "r");
-             char c;
-             while((c=fgetc(f))!=EOF){
-                 response =+ c;
-             }        
-             fclose(f);
-             write(client_sock , response , strlen(response)); //awnser the raw html file 
+             char buffer[];
+             char buf[4096];
+             ssize_t n;
+             char *str = NULL;
+             size_t len = 0;
+             while (n = read(directory, buf, sizeof buf)) {
+                 if (n < 0) {
+                     if (errno == EAGAIN)
+                         continue;
+                     write(client_sock , "404" , strlen("404"));
+                     break;
+                 }
+             str = realloc(str, len + n + 1);
+             memcpy(str + len, buf, n);
+             len += n;
+             str[len] = '\0';
+             }
+             char *str = "four oh four not found";
+             write(client_sock , str , strlen(str)); //awnser the raw html file 
              free(str);
              
             } else if (startswith(&p[0], '\uD83D\uDE24')) {
