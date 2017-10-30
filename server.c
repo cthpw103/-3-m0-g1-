@@ -11,8 +11,18 @@ bool startswith(const char *pre, const char *str)
 {
     return strncmp(pre, str, strlen(pre)) == 0;
 }
+void removeChar(char *str, char garbage) {
+
+    char *src, *dst;
+    for (src = dst = str; *src != '\0'; src++) {
+        *dst = *src;
+        if (*dst != garbage) dst++;
+    }
+    *dst = '\0';
+}
 int main(int argc , char *argv[])
 {
+    char* response;
     int socket_desc , client_sock , c , read_size;
     struct sockaddr_in server , client;
     char client_message[];
@@ -22,6 +32,7 @@ int main(int argc , char *argv[])
     server.sin_addr.s_addr = INADDR_ANY;
     server.sin_port = htons( 80 );
     listen(socket_desc , 3);
+    char* directory = "index.html"; //default is index.html
     c = sizeof(struct sockaddr_in);
     client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
     while((read_size = recv(client_sock , client_message , 2000 , 0)) > 0)
@@ -44,17 +55,28 @@ int main(int argc , char *argv[])
             if (startswith(&p[0], '\uD83D\uDE15')) {
              // get
              // uuuhhhhh 
+             char* str = malloc(strlen(&p[0])+1);
+             strcpy(str, &p[0]);
+             removeChar(str, '\uD83D\uDE15');
+             directory = str;
+             //woah :b:ecnology
+             FILE *dir;
+             dir=fopen(directory, "r");
+             char c;
+             while((c=fgetc(f))!=EOF){
+                 response =+ c;
+             }        
+             fclose(f);
+             write(client_sock , response , strlen(response)); //awnser the raw html file 
+             free(str);
              
             } else if (startswith(&p[0], '\uD83D\uDE24')) {
              // post
              // wait who cares lol
             }
-            write(client_sock , "001 Specified hostname is not server's hostname" , strlen(msg));
          }
         } while ((ptr2 = strtok_r(NULL, "\n", &temp)) != NULL);
         
-        //insert hackery stuff and use this:
-        //write(client_sock , msg , strlen(msg));
     }
     return 0;
 }
