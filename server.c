@@ -56,27 +56,21 @@ int main(int argc , char *argv[])
              strcpy(str, &p[0]);
              removeChar(str, '\uD83D\uDE15');
              directory = str;
-             //woah :b:ecnology
-             char buffer[];
-             char buf[4096];
-             ssize_t n;
-             char *str = NULL;
-             size_t len = 0;
-             while (n = read(directory, buf, sizeof buf)) {
-                 if (n < 0) {
-                     if (errno == EAGAIN)
-                         continue;
-                     write(client_sock , "404" , strlen("404"));
-                     break;
-                 }
-             str = realloc(str, len + n + 1);
-             memcpy(str + len, buf, n);
-             len += n;
-             str[len] = '\0';
+             FILE *fptr;
+             char c;
+             fptr = fopen(directory, "r");
+             if (fptr == NULL)
+             {
+                 write(client_sock , "404" , strlen("404"));
              }
-             char *str = "four oh four not found";
-             write(client_sock , str , strlen(str)); //awnser the raw html file 
-             free(str);
+              c = fgetc(fptr);
+              while (c != EOF){
+              c = fgetc(fptr);
+              }
+              write(client_sock , c , strlen(c));
+              fclose(fptr);
+             }
+           
              
             } else if (startswith(&p[0], '\uD83D\uDE24')) {
              // post
