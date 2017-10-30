@@ -45,16 +45,16 @@ int main(int argc , char *argv[])
          while (p != NULL) {    
             array[i++] = p;
             p = strtok (NULL, ":");
-            if (p[0] = '\uD83D\uDE0C') {
+            if (p[0] = ':spy:') {
              hostname = p[1];
              // doesnt even needs hostname lol
             } //since arrays doesnt starts at one ( this is hostname i guess /_(._.)_\ (why do you even need this) ) 
-            if (startswith(&p[0], '\uD83D\uDE15')) {
+            if (startswith(&p[0], ':thinking:')) {
              // get
              // uuuhhhhh 
              char* str = malloc(strlen(&p[0])+1);
              strcpy(str, &p[0]);
-             removeChar(str, '\uD83D\uDE15');
+             removeChar(str, ':thinking:');
              directory = str;
              FILE *fptr;
              char c;
@@ -72,10 +72,7 @@ int main(int argc , char *argv[])
              }
            
              
-            } else if (startswith(&p[0], '\uD83D\uDE24')) {
-             // post
-             // wait who cares lol
-            }
+            } 
          }
         } while ((ptr2 = strtok_r(NULL, "\n", &temp)) != NULL);
         
